@@ -1,0 +1,52 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listado De Planetas</title>
+    <meta charset="utf-8" />
+    <!--Esto es un comentario-->
+    <!--en el head se coloca informacion que es para el navegador, scripts, css-->
+</head>
+<body>
+    <!--aqui inicia el cuerpo de la pagina que se esta creando (la vista)-->
+    <h1>Listado de planetas</h1>
+
+    @foreach (var planeta in ViewBag.planetas)
+            {
+                <hr />
+                <h4>
+                    <strong> Ficha del planeta: </strong> @planeta.id </h4>
+              
+                <p>
+
+                    Nombre: @planeta.nombre <br />
+                    Tipo: @planeta.tipo <br />
+                    Numero de anillos: @planeta.numeroAnillos <br />
+
+                </p>
+                @Html.ActionLink("Modificar informacion", "editarPlaneta", new { identificador = planeta.id }, new { @class = "btn btn alert-info",@onclick = "return confirm('Quiere modificar este planeta?');"
+                    }
+                )
+        <hr />
+            }
+
+
+
+
+
+
+
+
+
+
+
+    <div class="seccion_9" id="s9">
+        <input type="button" value="Volver al inicio" onclick="history.back()" /><hr />
+
+    </div>
+
+
+
+
+</body>
+</html>
