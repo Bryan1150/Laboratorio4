@@ -19,7 +19,7 @@ namespace Laboratorio4.Controllers
         }
             public ActionResult crearPlaneta()
         {
-            return View();
+            return View("crearPlaneta");
         }
 
             [HttpPost]
@@ -78,6 +78,20 @@ namespace Laboratorio4.Controllers
             {
                 PlanetasHandler accesoDatos = new PlanetasHandler();
                 accesoDatos.modificarPlaneta(planeta);
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult eliminarPlaneta(PlanetaModel planeta)
+        {
+            try
+            {
+                PlanetasHandler accesoDatos = new PlanetasHandler();
+                accesoDatos.eliminarPlaneta(planeta.id);
                 return RedirectToAction("Index", "Home");
             }
             catch

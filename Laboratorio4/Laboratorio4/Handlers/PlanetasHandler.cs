@@ -55,21 +55,26 @@ namespace Laboratorio4.Handlers
 
         private byte[] obtenerBytes(HttpPostedFileBase archivo)
         {
-            byte[] bytes;
-            BinaryReader lector = new BinaryReader(archivo.InputStream);
-            bytes = lector.ReadBytes(archivo.ContentLength);
-            return bytes;
+            try
+            {
+                byte[] bytes;
+                BinaryReader lector = new BinaryReader(archivo.InputStream);
+                bytes = lector.ReadBytes(archivo.ContentLength);
+                return bytes;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public bool crearPlaneta(PlanetaModel planeta)
         {
-            string consulta = "INSERT INTO Planeta (archivoPlaneta, tipoArchivo, nombrePlaneta, numeroAnillos, tipoPlaneta) " + "VALUES(@archivo,@tipoArchivo,@nombre,@numeroAnillos,@tipoPlaneta) ";
+            string consulta = "INSERT INTO Planeta (planetaId, nombrePlaneta, numeroAnillos, tipoPlaneta) " + "VALUES(@id, @nombre,@numeroAnillos,@tipoPlaneta) ";
 
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             SqlDataAdapter adaptadorParaTabla = new SqlDataAdapter(comandoParaConsulta);
-
-            comandoParaConsulta.Parameters.AddWithValue("@archivo", obtenerBytes(planeta.archivo));
-            comandoParaConsulta.Parameters.AddWithValue("@tipoArchivo", planeta.archivo.ContentType);
+            comandoParaConsulta.Parameters.AddWithValue("@id", planeta.id);
             comandoParaConsulta.Parameters.AddWithValue("@nombre", planeta.nombre);
             comandoParaConsulta.Parameters.AddWithValue("@numeroAnillos", planeta.numeroAnillos);
             comandoParaConsulta.Parameters.AddWithValue("@tipoPlaneta", planeta.tipo);
@@ -100,6 +105,16 @@ namespace Laboratorio4.Handlers
             conexion.Close();
             return exito;
 
+        }
+
+        public bool eliminarPlaneta(int id)
+        {
+            string consulta = "DELETE FROM Planeta WHERE planetaId = " + id + ";";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            conexion.Open();
+            bool exito = comandoParaConsulta.ExecuteNonQuery() >= 1;
+            conexion.Close();
+            return exito;
         }
     }
 }
