@@ -11,18 +11,31 @@ namespace Laboratorio4.Controllers
     public class PlanetasController : Controller
     {
         // GET: Planetas
-      public ActionResult listadoDePlanetas()
+
+        public PlanetasHandler accesoDatos { get; set; }
+
+        public PlanetasController()
+        {
+            accesoDatos = new PlanetasHandler();
+        }
+
+        public PlanetasController(PlanetasHandler planetasHandler)
+        {
+            accesoDatos = planetasHandler;
+        }
+
+        public ActionResult listadoDePlanetas()
         {
             PlanetasHandler accesoDatos = new PlanetasHandler();
             ViewBag.planetas = accesoDatos.obtenerTodoslosPlanetas();
             return View();
         }
-            public ActionResult crearPlaneta()
+        public ActionResult crearPlaneta()
         {
             return View("crearPlaneta");
         }
 
-            [HttpPost]
+        [HttpPost]
         public ActionResult crearPlaneta(PlanetaModel planeta)
         {
             ViewBag.ExitoAlCrear = false;
@@ -37,6 +50,10 @@ namespace Laboratorio4.Controllers
                         ViewBag.Message = "El planeta " + planeta.nombre + "fue creado con exito! owo";
                         ModelState.Clear();
                     }
+                    else
+                    {
+                        ViewBag.Message = "Algo salio mal y no fue posible crear el planeta unu";
+                    }
                 }
                 return View();
             }
@@ -48,14 +65,14 @@ namespace Laboratorio4.Controllers
         }
 
         [HttpGet]
-        public ActionResult editarPlaneta(int ? identificador)
+        public ActionResult editarPlaneta(int? identificador)
         {
             ActionResult vista;
             try
             {
                 PlanetasHandler accesoDatos = new PlanetasHandler();
                 PlanetaModel planetaModificar = accesoDatos.obtenerTodoslosPlanetas().Find(smodel => smodel.id == identificador);
-                if(planetaModificar == null)
+                if (planetaModificar == null)
                 {
                     vista = RedirectToAction("listadoDePlanetas");
                 }
@@ -78,20 +95,6 @@ namespace Laboratorio4.Controllers
             {
                 PlanetasHandler accesoDatos = new PlanetasHandler();
                 accesoDatos.modificarPlaneta(planeta);
-                return RedirectToAction("Index", "Home");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        public ActionResult eliminarPlaneta(PlanetaModel planeta)
-        {
-            try
-            {
-                PlanetasHandler accesoDatos = new PlanetasHandler();
-                accesoDatos.eliminarPlaneta(planeta.id);
                 return RedirectToAction("Index", "Home");
             }
             catch

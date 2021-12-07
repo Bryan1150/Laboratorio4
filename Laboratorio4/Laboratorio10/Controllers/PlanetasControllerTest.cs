@@ -19,21 +19,6 @@ namespace Laboratorio10.Controllers
             //Assert
             Assert.IsNotNull(vista);
         }
-        //Prueba Integrada
-        [TestMethod]
-        public void EliminarPlanetaEliminaEnBaseDeDatos()
-        {
-            //Arrange
-            int id = 6;
-            PlanetasController planetasController = new PlanetasController();
-            //Act
-            ViewResult vista = planetasController.editarPlaneta(id) as ViewResult;
-            PlanetaModel planeta = vista.Model as PlanetaModel;
-            planetasController.eliminarPlaneta(planeta);
-            ViewResult vistaBorrado = planetasController.editarPlaneta(id) as ViewResult;
-            //Assert
-            Assert.IsNull(vistaBorrado);
-        }
         [TestMethod]
         public void TestCrearPlanetaViewResultNotNull()
         {
@@ -60,7 +45,7 @@ namespace Laboratorio10.Controllers
         public void EditarPlanetaIdValidoVistaNoNula()
         {
             //Arrange
-            int id = 1;
+            int id = 3;
             PlanetasController planetasController = new PlanetasController();
             //Act
             ViewResult vista = planetasController.editarPlaneta(id) as ViewResult;
@@ -72,7 +57,7 @@ namespace Laboratorio10.Controllers
         public void EditarPlanetaValidoModeloRetornadoNoEsNulo()
         {
             //Arrange
-            int id = 1;
+            int id = 3;
             PlanetasController planetasController = new PlanetasController();
             //Act
             ViewResult vista = planetasController.editarPlaneta(id) as ViewResult;
@@ -96,22 +81,22 @@ namespace Laboratorio10.Controllers
         public void EditarPlanetaElModeloEnviadoEsCorrecto()
         {
             //Arrange
-            int id = 1;
+            int id = 3;
             PlanetasController planetasController = new PlanetasController();
             //Act
             ViewResult vista = planetasController.editarPlaneta(id) as ViewResult;
             PlanetaModel planeta = vista.Model as PlanetaModel;
             //Assert
             Assert.IsNotNull(planeta);
-            Assert.AreEqual(3, planeta.numeroAnillos);
-            Assert.AreEqual("Tierra2", planeta.nombre);
+            Assert.AreEqual(0, planeta.numeroAnillos);
+            Assert.AreEqual("Venus", planeta.nombre);
         }
 
         [TestMethod]
         public void ListadoDePlanetasCantidadDePlanetasEsCorrecta()
         {
             //Arrange
-            int numeroPlanetas = 9;
+            int numeroPlanetas = 10;
             PlanetasController planetasController = new PlanetasController();
             //Act
             ViewResult vista = planetasController.listadoDePlanetas() as ViewResult;
